@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
-
-pragma solidity ^0.8.24;
-
-import "hardhat/console.sol";
+pragma solidity ^0.8.0;
 
 contract Transactions {
-    uint256 transactionCount;
+    uint256 transactionCount; // Similar to a class property in JavaScript
 
-    event Transfer(address from, address receiver, uint amount, string message, uint256 timestamp, string keyword);
-  
+    event Transfer(
+        address from,
+        address receiver,
+        uint amount,
+        string message,
+        uint256 timestamp,
+        string keyword
+    ); // Similar to a function with parameters in JavaScript
+
     struct TransferStruct {
         address sender;
         address receiver;
@@ -16,5 +20,27 @@ contract Transactions {
         string message;
         uint256 timestamp;
         string keyword;
+    } // Similar to an object in JavaScript
+
+    TransferStruct[] transactions; // This is an array
+
+    function addToBlockchain(
+        address payable receiver,
+        uint amount,
+        string memory message,
+        string memory keyword
+    ) public {
+        transactionCount += 1;
+        transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword));
+
+        emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
+    }
+
+    function getAllTransactions() public view returns (TransferStruct[] memory) {
+        return transactions;
+    }
+
+    function getTransactionCount() public view returns (uint256) {
+        return transactionCount;
     }
 }
